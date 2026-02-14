@@ -1,0 +1,21 @@
+name: Sync to Hugging Face hub
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  sync-to-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3 # Version plus récente recommandée
+        with:
+          fetch-depth: 0
+          lfs: true # Utile si vous avez des fichiers volumineux
+
+      - name: Push to hub
+        env:
+          HG_TOKEN: ${{ secrets.HG }}
+        run: |
+          # On injecte le token directement dans l'URL pour l'authentification
+          git push --force https://lelianloic:$HG_TOKEN@huggingface.co/spaces/lelianloic/Demo_huggingFaceXgithub main
